@@ -1,0 +1,6 @@
+chromium==0.0.0
+greenlet==3.0.3
+playwright==1.41.2
+pyee==11.0.1
+pytube==15.0.0
+typing_extensions==4.9.0
