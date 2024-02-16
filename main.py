@@ -30,7 +30,7 @@ def getVideoUrl(item, page):
 def main():
     with sync_playwright() as p:
         #open the chromium browser
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         #search for the playlist in the browser
@@ -40,20 +40,33 @@ def main():
         #select all the videos in the playlist
         videoXpath = "//div[@id='contents']/ytd-playlist-video-list-renderer/div[@id='contents']/ytd-playlist-video-renderer"
         contents = page.locator(videoXpath).all()
-        for item in contents[:total]:
+
+        global total
+        global start
+        if total < 0:
+            total = len(contents)
+        print(f"total number of videos to be downloaded : {total - (start-1)}")
+
+
+        for index,item in enumerate(contents[start-1:total]):
             url = getVideoUrl(item, page)
             #download the video
-            downloadVideo(url)
+            downloadVideo(url, index+start)
             page.wait_for_timeout(2000)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-u', '--url', type=str , required=True)
+    parser.add_argument('-F','-f', '--From', type=int, required=False, default=1)
     parser.add_argument('-t', '--total', type=int, required=False)
     args = parser.parse_args()
     if args.url:
         search_for = args.url; 
     if args.total:
+        start = args.From
         total = args.total
+    else:
+        start = args.From
+        total = -1
     main()

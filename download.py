@@ -1,8 +1,9 @@
 from pytube import YouTube
 import os
 
-def downloadVideo(videoUrl):
+def downloadVideo(videoUrl, number):
     path = os.path.expanduser('~/tawheed/Downloads/Youtube-videos')
+    count = number
     try:
         YouTube(videoUrl).streams.get_highest_resolution().download(path)
         # When you request .streams, Pytube returns a list of available streams
@@ -11,7 +12,7 @@ def downloadVideo(videoUrl):
         # The .first() method simply selects the first stream from this list, 
         # typically in the highest resolution available, which is usually the 
         # best quality stream.
-        print(f"downloaded video to {path}")        
+        print(f"downloaded video number {count} to {path}")
     except:
-        print("Connection Error")
+        print(f"Error in downloading video number {count}")
 
