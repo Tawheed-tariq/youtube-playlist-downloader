@@ -5,7 +5,8 @@ def downloadVideo(videoUrl, number):
     path = os.path.expanduser('~/tawheed/Downloads/Youtube-videos')
     count = number
     try:
-        YouTube(videoUrl).streams.get_highest_resolution().download(path)
+        filename = str(count)+ "." + YouTube(videoUrl).streams.get_highest_resolution().default_filename
+        YouTube(videoUrl).streams.get_highest_resolution().download(path, filename)
         # When you request .streams, Pytube returns a list of available streams
         #  for that particular video. These streams represent different formats
         #  and qualities in which the video is available for download. 
